@@ -3,7 +3,9 @@ name: build
 on:
   push:
     branches: [main, rewrite]
-  
+  repository_dispatch:
+    branches: [main, rewrite]
+
 jobs:
   build:
     runs-on: ubuntu-latest
