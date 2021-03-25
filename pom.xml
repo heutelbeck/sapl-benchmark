@@ -17,76 +17,77 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>io.sapl</groupId>
-        <artifactId>sapl-policy-engine</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>io.sapl</groupId>
+		<artifactId>sapl-policy-engine</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>sapl-benchmark-index</artifactId>
+	<artifactId>sapl-benchmark-index</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 
-    <name>SAPL Index Benchmark</name>
-    <description>Benchmarking tool for the PRPs indexing algorithm</description>
+	<name>SAPL Index Benchmark</name>
+	<description>Benchmarking tool for the PRPs indexing algorithm</description>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.sapl</groupId>
-                <artifactId>sapl-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sapl</groupId>
+				<artifactId>sapl-bom</artifactId>
+				<version>2.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.sapl</groupId>
-            <artifactId>sapl-pdp-embedded</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>info.picocli</groupId>
-            <artifactId>picocli</artifactId>
-            <version>4.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.knowm.xchart</groupId>
-            <artifactId>xchart</artifactId>
-            <version>3.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls</artifactId>
-            <version>2.8.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-poi</artifactId>
-            <version>1.0.13</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>io.sapl</groupId>
+			<artifactId>sapl-pdp-embedded</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>4.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.knowm.xchart</groupId>
+			<artifactId>xchart</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jxls</groupId>
+			<artifactId>jxls</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jxls</groupId>
+			<artifactId>jxls-poi</artifactId>
+			<version>1.0.13</version>
+		</dependency>
 
         <!-- 		<dependency>
                     <groupId>org.apache.commons</groupId>
@@ -103,32 +104,32 @@
                     <artifactId>gson</artifactId>
                 </dependency>
         -->
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
                 <!-- Build model at compile-time instead of runtime and update configuration for GraalVM -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>info.picocli</groupId>
-                            <artifactId>picocli-codegen</artifactId>
-                            <version>4.6.1</version>
-                        </path>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>info.picocli</groupId>
+							<artifactId>picocli-codegen</artifactId>
+							<version>4.6.1</version>
+						</path>
                         <!-- If the picocli codegen is added explicitly, lombok has to be added manually as well -->
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.18</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.18</version>
+						</path>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
 
 
             <!--
@@ -146,37 +147,139 @@
                </configuration>
            </plugin>
             -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
                             <!-- The next two entries write the projects version information to the manifest -->
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <!-- Declares the entry point when running the JAR -->
-                            <mainClass>io.sapl.benchmarks.index.BenchmarkMain</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+							<mainClass>io.sapl.benchmarks.index.BenchmarkMain</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
                     <!--
                          The resulting fat jar will replace the default JAR with not suffix appended in the name.
                          This will trigger a warning the the maven logs that cannot be avoided, but it can be ignored.
                     -->
-                    <appendAssemblyId>false</appendAssemblyId>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<profiles>
+		<profile>
+			<id>publish</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.2.0</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.2.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<tags>
+								<tag>
+									<name>generated</name>
+									<placement>a</placement>
+									<head>Generated Code</head>
+								</tag>
+								<tag>
+									<name>ordered</name>
+									<placement>a</placement>
+									<head>EMF Ordered</head>
+								</tag>
+								<tag>
+									<name>model</name>
+									<placement>a</placement>
+									<head>EMF Model</head>
+								</tag>
+								<tag>
+									<name>returns</name>
+									<placement>a</placement>
+									<head>EMF Returns:</head>
+								</tag>
+							</tags>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.8</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<configuration>
+							<!-- prevent gpg from using PIN entry programs -->
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
