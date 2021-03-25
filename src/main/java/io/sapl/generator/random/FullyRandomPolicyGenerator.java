@@ -40,8 +40,8 @@ public class FullyRandomPolicyGenerator implements PolicyGenerator {
 
     @Override
     public void generatePolicies(Path folder) throws FileNotFoundException, UnsupportedEncodingException {
-        log.info("Generate {} polices in folder: {}", config.getPolicyCount(), folder);
-        for (int i = 0; i < config.getPolicyCount(); i++) {
+        log.info("Generate {} polices in folder: {}", config.getPolicyCharacteristics().getPolicyCount(), folder);
+        for (int i = 0; i < config.getPolicyCharacteristics().getPolicyCount(); i++) {
             String name = "p_" + i;
             var filename = folder + File.pathSeparator + name + ".sapl";
             log.info("write policy to: {}", filename);
@@ -55,13 +55,13 @@ public class FullyRandomPolicyGenerator implements PolicyGenerator {
     }
 
     private String generatePolicyString(String name) {
-        final int numberOfVariables = config.getLogicalVariableCount();
+        final int numberOfVariables = config.getPolicyCharacteristics().getLogicalVariableCount();
         final int numberOfConnectors = numberOfVariables - 1;
-        final int poolSize = config.getVariablePoolCount();
+        final int poolSize = config.getPolicyCharacteristics().getVariablePoolCount();
 
-        final double negationChance = config.getNegationProbability();
-        final double bracketChance = config.getBracketProbability();
-        final double conjunctionChance = config.getConjunctionProbability();
+        final double negationChance = config.getPolicyCharacteristics().getNegationProbability();
+        final double bracketChance = config.getPolicyCharacteristics().getBracketProbability();
+        final double conjunctionChance = config.getPolicyCharacteristics().getConjunctionProbability();
 
         StringBuilder statement = new StringBuilder(DEFAULT_BUFFER).append("policy \"").append(name).append("\"")
                 .append(System.lineSeparator()).append("permit ");

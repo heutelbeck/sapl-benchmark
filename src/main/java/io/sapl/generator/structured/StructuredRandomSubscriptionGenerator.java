@@ -39,19 +39,12 @@ public class StructuredRandomSubscriptionGenerator implements SubscriptionGenera
         double roll = roll();
         if (roll >= emptySubProbability) {
             log.trace("dice rolled {} - higher than {} -> EMPTY SUB", roll, emptySubProbability);
-            return createEmptySubscription();
+            return SubscriptionGenerator.createEmptySubscription();
         }
         log.trace("dice rolled {} - lower than {}", roll, emptySubProbability);
-        return createSubscription(getRandomSub(), getRandomAction(), getRandomResource());
+        return SubscriptionGenerator.createSubscription(getRandomSub(), getRandomAction(), getRandomResource());
     }
 
-    public AuthorizationSubscription createEmptySubscription() {
-        return createSubscription(EMPTY_NODE, EMPTY_NODE, EMPTY_NODE);
-    }
-
-    private AuthorizationSubscription createSubscription(JsonNode subject, JsonNode action, JsonNode resource) {
-        return new AuthorizationSubscription(subject, action, resource, EMPTY_NODE);
-    }
 
     private double roll() {
         return domainDataContainer.getPolicyUtil().roll();

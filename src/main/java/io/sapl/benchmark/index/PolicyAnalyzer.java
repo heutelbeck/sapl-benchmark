@@ -17,7 +17,6 @@ package io.sapl.benchmark.index;
 
 import io.sapl.api.interpreter.PolicyEvaluationException;
 import io.sapl.benchmark.PolicyCharacteristics;
-import io.sapl.generator.structured.DomainDataContainer;
 import io.sapl.grammar.sapl.Expression;
 import io.sapl.grammar.sapl.SAPL;
 import io.sapl.interpreter.DefaultSAPLInterpreter;
@@ -50,19 +49,19 @@ public class PolicyAnalyzer {
     private final EvaluationContext pdpScopedEvaluationContest = new EvaluationContext(new AnnotationAttributeContext(),
             new AnnotationFunctionContext(), new HashMap<>());
 
-    private final DomainDataContainer domainDataContainer;
+    //    private final DomainDataContainer domainDataContainer;
     private final Path policyPath;
 
     private final Map<String, SAPL> parsedDocuments = new HashMap<>();
     private final Map<String, SAPL> publishedDocuments = new HashMap<>();
     private final Map<String, DisjunctiveFormula> publishedTargets = new HashMap<>();
 
-    public PolicyAnalyzer(DomainDataContainer domainDataContainer, Path policyPath) {
-        this.domainDataContainer = domainDataContainer;
+    public PolicyAnalyzer(Path policyPath) {
+        //        this.domainDataContainer = domainDataContainer;
         this.policyPath = policyPath;
     }
 
-    public PolicyCharacteristics analyzeSaplDocuments(IndexType indexType) {
+    public PolicyCharacteristics analyzeSaplDocuments() {
         log.info("analyzing policies in directory {}", policyPath);
         parseDocuments();
 

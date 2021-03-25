@@ -1,14 +1,15 @@
 package io.sapl.generator.random;
 
 import io.sapl.benchmark.PolicyCharacteristics;
+import io.sapl.generator.GeneralConfiguration;
 import lombok.Data;
 
 @Data
-public class FullyRandomConfiguration {
+public class FullyRandomConfiguration extends GeneralConfiguration {
 
-    private String name = "";
-
-    private long seed = 0L;
+    //    private String name = "";
+    //
+    //    private long seed = 0L;
 
     private PolicyCharacteristics policyCharacteristics;
 

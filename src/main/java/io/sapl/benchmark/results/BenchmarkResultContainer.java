@@ -1,12 +1,14 @@
 package io.sapl.benchmark.results;
 
+import io.sapl.benchmark.BenchmarkParameters;
 import io.sapl.benchmark.PolicyCharacteristics;
 import io.sapl.benchmark.index.IndexType;
-import io.sapl.generator.ConfigurationFactory;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -27,17 +29,18 @@ public class BenchmarkResultContainer {
     List<Double> mdnValues = new LinkedList<>();
     List<String> identifier = new LinkedList<>();
     List<PolicyCharacteristics> characteristics = new LinkedList<>();
+    List<Long> seeds = new LinkedList<>();
 
     List<BenchmarkAggregate> aggregateData = new LinkedList<>();
 
-    public BenchmarkResultContainer(IndexType indexType, int runs, int iterations) {
+
+    public BenchmarkResultContainer(BenchmarkParameters configuration) {
         this.benchmarkId = UUID.randomUUID().toString();
         this.benchmarkTimestamp = System.currentTimeMillis();
         this.runtimeInfo = String.format("%s_%s", System.getProperty("java.vendor"),
                 System.getProperty("java.version"));
-        this.indexType = indexType;
-        this.runs = runs;
-        this.iterations = iterations;
-
+        this.indexType = configuration.getIndexType();
+        this.runs = configuration.getBenchmarkRuns();
+        this.iterations = configuration.getBenchmarkIterations();
     }
 }

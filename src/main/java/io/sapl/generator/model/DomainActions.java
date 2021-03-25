@@ -15,15 +15,15 @@
  */
 package io.sapl.generator.model;
 
+import io.sapl.generator.structured.DomainDataContainer;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import io.sapl.generator.structured.DomainDataContainer;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
@@ -45,11 +45,12 @@ public class DomainActions {
 
 
     public static List<String> generateCustomActionList(DomainDataContainer domainDataContainer) {
-        int numberOfActions = domainDataContainer.getDice().nextInt(domainDataContainer.getConfiguration().getNumberOfActions()) + 1;
+        int numberOfActions = domainDataContainer.getPolicyUtil()
+                .roll(domainDataContainer.getConfiguration().getNumberOfActions()) + 1;
         List<String> actionList = new ArrayList<>(numberOfActions);
 
         for (int i = 0; i < numberOfActions; i++) {
-            actionList.add(String.format("action.%03d", domainDataContainer.getDice().nextInt(1000) + 1));
+            actionList.add(String.format("action.%03d", domainDataContainer.getPolicyUtil().roll(1000) + 1));
         }
 
         return new DomainActions(actionList, true).getActionList();

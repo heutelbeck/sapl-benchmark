@@ -1,13 +1,13 @@
 package io.sapl.generator.structured;
 
+import io.sapl.generator.GeneralConfiguration;
 import lombok.Data;
 
 @Data
-public class StructuredRandomConfiguration {
+public class StructuredRandomConfiguration extends GeneralConfiguration {
 
-    String name = "";
-
-    private long seed = 0L;
+//    String name = "";
+//    private long seed = 0L;
 
     boolean cleanPolicyDirectory = true;
     //    long seed = 2454325;

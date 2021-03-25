@@ -5,9 +5,17 @@ import io.sapl.generator.structured.StructuredRandomConfiguration;
 import lombok.experimental.UtilityClass;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 
 @UtilityClass
 public class ConfigurationFactory {
+
+    public List<GeneralConfiguration> parseConfigurationFile(String configurationFile, Path path){
+        //TODO
+        return Collections.emptyList();
+    }
 
     public FullyRandomConfiguration fullyRandomDefault() {
         return new FullyRandomConfiguration();

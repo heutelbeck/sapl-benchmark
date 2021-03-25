@@ -37,7 +37,7 @@ public class FullyRandomSubscriptionGenerator implements SubscriptionGenerator {
     public AuthorizationSubscription createFullyRandomSubscription() {
         ObjectNode resource = JsonNodeFactory.instance.objectNode();
         for (String var : getVariables()) {
-            resource = resource.put(var, (roll() >= configuration.getFalseProbability()));
+            resource = resource.put(var, (roll() >= configuration.getPolicyCharacteristics().getFalseProbability()));
         }
         return new AuthorizationSubscription(NullNode.getInstance(), NullNode.getInstance(), resource,
                 NullNode.getInstance());
@@ -45,7 +45,7 @@ public class FullyRandomSubscriptionGenerator implements SubscriptionGenerator {
 
     public Collection<String> getVariables() {
         HashSet<String> variables = new HashSet<>();
-        for (int i = 0; i < configuration.getVariablePoolCount(); i++) {
+        for (int i = 0; i < configuration.getPolicyCharacteristics().getVariablePoolCount(); i++) {
             variables.add("x" + i);
         }
         return variables;

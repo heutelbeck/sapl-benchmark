@@ -48,9 +48,9 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
         generateDomainPolicies(policyFolder.toString());
     }
 
-    public void generateDomainPoliciesWithSeed(long newSeed, String policyPath) {
+    public void generateDomainPoliciesWithSeed(long newSeed, Path policyPath) {
         policyUtil.reseedDice(newSeed);
-        generateDomainPolicies(policyPath);
+        generateDomainPolicies(policyPath.toString());
     }
 
 

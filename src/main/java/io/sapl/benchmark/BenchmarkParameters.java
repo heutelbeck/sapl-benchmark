@@ -6,25 +6,27 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BenchmarkConfiguration {
+public class BenchmarkParameters {
 
     String name;
 
-    long seed = 0L;
+    long seed;
 
     IndexType indexType;
 
     BenchmarkType benchmarkType;
 
-    int numberOfBenchmarkRuns = 300;
+    int benchmarkRuns;
 
-    String outputPath = ".";
+    int benchmarkIterations;
 
-    String filePrefix = "";
+    String outputPath;
 
-    String configurationFile = "";
+    String filePrefix;
 
-    boolean performCleanBenchmark = false;
+    String configurationFile;
+
+    boolean performCleanBenchmark;
 
     public String getName() {
         return String.format("Bench_%d_%s", seed, indexType);

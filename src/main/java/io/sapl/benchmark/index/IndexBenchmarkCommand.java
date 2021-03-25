@@ -1,11 +1,16 @@
 package io.sapl.benchmark.index;
 
-import io.sapl.benchmark.BenchmarkConfiguration;
+import io.sapl.benchmark.BenchmarkExecutor;
+import io.sapl.benchmark.BenchmarkParameters;
 import io.sapl.benchmark.BenchmarkType;
+import io.sapl.benchmark.results.BenchmarkRecord;
+import io.sapl.benchmark.results.BenchmarkResultContainer;
 import io.sapl.benchmark.results.BenchmarkResultWriter;
 import io.sapl.benchmark.util.ManifestVersionProvider;
-import io.sapl.generator.PolicyGeneratorFactory;
-import io.sapl.prp.index.ImmutableParsedDocumentIndex;
+import io.sapl.generator.ConfigurationFactory;
+import io.sapl.generator.GeneralConfiguration;
+import io.sapl.generator.GeneratorFactory;
+import io.sapl.generator.PolicyUtil;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -15,6 +20,7 @@ import picocli.CommandLine.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 @Slf4j
@@ -42,64 +48,59 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
     public Integer call() throws Exception {
         log.info("Running an index benchmark... {}", this);
 
-        var tempDirectory = preprareTempDirectory();
+        var tempDirectory = prepareTempDirectory();
         var outputDirectory = Path.of(outputPath);
         log.info("Results will be written to: {}", outputDirectory.toAbsolutePath());
 
-        var configuration = BenchmarkConfiguration.builder()
+        var parameters = BenchmarkParameters.builder()
                 .seed(0L)
                 .indexType(IndexType.valueOf(indexType))
                 .benchmarkType(BenchmarkType.valueOf(benchmarkType))
-                .numberOfBenchmarkRuns(300)
+                .benchmarkRuns(300)
+                .benchmarkIterations(1)
                 .outputPath(outputPath)
                 .filePrefix(filePrefix)
                 .configurationFile(benchmarkConfigurationFile)
                 .build();
-        log.info("Benchmark configuration: {}", configuration);
-
-        log.info("Generating policies ...");
-
-        var generator = PolicyGeneratorFactory.policyGeneratorByType(configuration, tempDirectory);
-        generator.generatePolicies(tempDirectory);
-
-        log.info("Load generated polices into index...");
-        ImmutableParsedDocumentIndex index = IndexFactory
-                .indexByTypeForDocumentsIn(configuration.getIndexType(), tempDirectory.toAbsolutePath().toString());
+        log.info("Benchmark parameters: {}", parameters);
 
 
-        log.info("Running benchmark...");
-        //		if (configuration.isCleanPolicyDirectory())
-        //			deleteTempDirectory(tempDirectory);
+        List<GeneralConfiguration> configurations = ConfigurationFactory
+                .parseConfigurationFile(parameters.getConfigurationFile(), tempDirectory.toAbsolutePath());
 
-        log.info("Benchmark completed. Writing results.");
-        var resultWriter = new BenchmarkResultWriter(configuration.getOutputPath(), configuration.getIndexType());
+        var resultWriter = new BenchmarkResultWriter(parameters.getOutputPath(), parameters.getIndexType());
+        var resultContainer = new BenchmarkResultContainer(parameters);
 
 
-        //        XYChart overviewChart = new XYChart(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        //        ResultWriter resultWriter = new ResultWriter(resultPath, indexType);
-        //
-        //        BenchmarkDataContainer benchmarkDataContainer = new BenchmarkDataContainer(indexType,
-        //                domainGenerator.getDomainData(), domainGenerator.getDomainData().getNumberOfBenchmarkRuns(),
-        //                benchmarkArguments.getNumberOfBenchmarkIterations());
-        //
-        //        List<PolicyGeneratorConfiguration> configs = generateConfigurations(benchmarkArguments);
-        //
-        //        for (PolicyGeneratorConfiguration config : configs) {
-        //
-        //            List<XlsRecord> results = benchmarkConfiguration(path, benchmarkDataContainer, config);
-        //
-        //            double[] times = new double[results.size()];
-        //            resultWriter.writeDetailsChart(results, times, config.getName());
-        //            overviewChart.addSeries(config.getName(), times);
-        //
-        //        }
-        //
-        //        resultWriter.writeFinalResults(benchmarkDataContainer, overviewChart);
+        for (GeneralConfiguration configuration : configurations) {
+            var policyUtil = new PolicyUtil(parameters.isPerformCleanBenchmark(), configuration.getSeed());
+
+            log.info("Generating policies ...");
+
+            var generator = GeneratorFactory.policyGeneratorByType(parameters, configuration, policyUtil);
+            generator.generatePolicies(tempDirectory);
+
+
+            log.info("Running benchmark ...");
+
+            var executor = new BenchmarkExecutor(policyUtil);
+            List<BenchmarkRecord> results = executor.runBenchmark(parameters, configuration);
+            resultWriter.addResultsForConfigToContainer(resultContainer, configuration, results);
+
+            double[] times = new double[results.size()];
+            resultWriter.writeDetailsChart(results, times, configuration.getName());
+            resultWriter.addSeriesToOverviewChart(times, configuration.getName());
+        }
+
+        log.info("Benchmark completed. Writing results ...");
+
+        resultWriter.writeFinalResults(resultContainer);
 
         return 0;
     }
 
-    private Path preprareTempDirectory() throws IOException {
+
+    private Path prepareTempDirectory() throws IOException {
         var tempDirectory = Files.createTempDirectory("sapl-benchmark-");
         log.info("Created temporary directory for storing generated policies: {}", tempDirectory.toAbsolutePath());
         return tempDirectory;

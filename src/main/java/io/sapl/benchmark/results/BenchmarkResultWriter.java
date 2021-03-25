@@ -2,6 +2,7 @@ package io.sapl.benchmark.results;
 
 import io.sapl.benchmark.PolicyCharacteristics;
 import io.sapl.benchmark.index.IndexType;
+import io.sapl.generator.GeneralConfiguration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jxls.template.SimpleExporter;
@@ -19,7 +20,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +31,8 @@ public class BenchmarkResultWriter {
 
     private static final int DEFAULT_HEIGHT = 1080;
     private static final int DEFAULT_WIDTH = 1920;
+
+    private static final double REMOVE_EDGE_DATA_BY_PERCENTAGE = 0.005D;
 
     private static final String ERROR_READING_TEST_CONFIGURATION = "Error reading test configuration";
     private static final String ERROR_WRITING_BITMAP = "Error writing bitmap";
@@ -36,7 +42,9 @@ public class BenchmarkResultWriter {
     private final String resultPath;
     private final IndexType indexType;
 
-    public void writeFinalResults(BenchmarkResultContainer resultContainer, XYChart overviewChart) {
+    private final XYChart overviewChart = new XYChart(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+    public void writeFinalResults(BenchmarkResultContainer resultContainer) {
         log.info("writing charts and results to {}", resultPath);
 
         writeOverviewChart(overviewChart);
@@ -69,6 +77,10 @@ public class BenchmarkResultWriter {
             log.error(ERROR_WRITING_BITMAP, e);
             System.exit(1);
         }
+    }
+
+    public void addSeriesToOverviewChart(double[] times, String seriesName) {
+        overviewChart.addSeries(seriesName, times);
     }
 
 
@@ -152,7 +164,7 @@ public class BenchmarkResultWriter {
                             resultContainer.getMaxValues().get(i),  //max
                             resultContainer.getAvgValues().get(i),  //avg
                             resultContainer.getMdnValues().get(i),  //mdn
-                            characteristics.getSeed(),
+                            resultContainer.getSeeds().get(i),
                             characteristics.getPolicyCount(),
                             characteristics.getVariablePoolCount(),
                             resultContainer.getRuns(),
@@ -169,5 +181,70 @@ public class BenchmarkResultWriter {
     private List<String> getExportHeaderAggregates() {
         return Arrays.asList("Test Case", "Minimum Time (ms)", "Maximum Time (ms)", "Average Time (ms)",
                 "Median Time (ms)", "Seed", "Policy Count", "Variable Count", "Runs", "Iterations");
+    }
+
+
+    private void sanitizeResults(List<BenchmarkRecord> results) {
+        int numberOfDataToRemove = (int) (results.size() * REMOVE_EDGE_DATA_BY_PERCENTAGE);
+
+        for (int i = 0; i < numberOfDataToRemove; i++) {
+            results.stream().min(Comparator.comparingDouble(BenchmarkRecord::getTimeDuration))
+                    .ifPresent(results::remove);
+
+            results.stream().max(Comparator.comparingDouble(BenchmarkRecord::getTimeDuration))
+                    .ifPresent(results::remove);
+        }
+    }
+
+    public void addResultsForConfigToContainer(BenchmarkResultContainer resultContainer,
+                                               GeneralConfiguration config, List<BenchmarkRecord> results) {
+        sanitizeResults(results);
+
+        resultContainer.getIdentifier().add(config.getName());
+        resultContainer.getMinValues().add(extractMin(results));
+        resultContainer.getMaxValues().add(extractMax(results));
+        resultContainer.getAvgValues().add(extractAvg(results));
+        resultContainer.getMdnValues().add(extractMdn(results));
+        resultContainer.getData().addAll(results);
+
+        resultContainer.getSeeds().add(config.getSeed());
+    }
+
+    private double extractMin(Iterable<BenchmarkRecord> data) {
+        double min = Double.MAX_VALUE;
+        for (BenchmarkRecord item : data) {
+            if (item.getTimeDuration() < min) {
+                min = item.getTimeDuration();
+            }
+        }
+        return min;
+    }
+
+    private double extractMax(Iterable<BenchmarkRecord> data) {
+        double max = Double.MIN_VALUE;
+        for (BenchmarkRecord item : data) {
+            if (item.getTimeDuration() > max) {
+                max = item.getTimeDuration();
+            }
+        }
+        return max;
+    }
+
+    private double extractAvg(Collection<BenchmarkRecord> data) {
+        double sum = 0;
+        for (BenchmarkRecord item : data) {
+            sum += item.getTimeDuration();
+        }
+        return sum / data.size();
+    }
+
+    private double extractMdn(Collection<BenchmarkRecord> data) {
+        List<Double> list = data.stream().map(BenchmarkRecord::getTimeDuration).sorted().collect(Collectors.toList());
+        int index = list.size() / 2;
+        if (list.size() % 2 == 0) {
+            return (list.get(index) + list.get(index - 1)) / 2;
+        } else {
+            return list.get(index);
+        }
     }
 }
