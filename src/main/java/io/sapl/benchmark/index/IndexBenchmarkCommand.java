@@ -30,10 +30,10 @@ import java.util.concurrent.Callable;
 public class IndexBenchmarkCommand implements Callable<Integer> {
 
     @Option(names = {"-i", "--index"}, description = "Type of the index used for the benchmark.")
-    private String indexType = "";
+    private IndexType indexType;
 
     @Option(names = {"-b", "--benchmark"}, description = "Type of the benchmark.")
-    private String benchmarkType = "";
+    private BenchmarkType benchmarkType;
 
     @Option(names = {"-o", "--output"}, description = "Path to the output directory for benchmark results.")
     private String outputPath = ".";
@@ -55,8 +55,8 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
 
         var parameters = BenchmarkParameters.builder()
                 .seed(0L)
-                .indexType(IndexType.valueOf(indexType))
-                .benchmarkType(BenchmarkType.valueOf(benchmarkType))
+                .indexType(indexType)
+                .benchmarkType(benchmarkType)
                 .benchmarkRuns(300)
                 .benchmarkIterations(1)
                 .outputPath(outputPath)
@@ -79,12 +79,13 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
 
             var generator = GeneratorFactory.policyGeneratorByType(parameters, benchmarkCase, policyUtil);
             generator.generatePolicies(tempDirectory);
+            benchmarkCase.setPolicyFolderPath(tempDirectory);
 
 
             log.info("Running benchmark ...");
 
             var executor = new BenchmarkExecutor(policyUtil);
-            List<BenchmarkRecord> results = executor.runBenchmark(parameters, benchmarkCase);
+            List<BenchmarkRecord> results = executor.runBenchmark(parameters, benchmarkCase, policyUtil);
             resultWriter.addResultsForCaseToContainer(resultContainer, benchmarkCase, results);
 
             double[] times = new double[results.size()];

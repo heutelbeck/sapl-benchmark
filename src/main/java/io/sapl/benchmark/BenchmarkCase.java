@@ -1,10 +1,10 @@
 package io.sapl.benchmark;
 
-import lombok.Getter;
+import lombok.Data;
 
 import java.nio.file.Path;
 
-@Getter
+@Data
 public class BenchmarkCase {
 
     String name;

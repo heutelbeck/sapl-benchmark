@@ -53,11 +53,11 @@ public class BenchmarkExecutor {
     private final PolicyUtil policyUtil;
 
 
-    public List<BenchmarkRecord> runBenchmark(BenchmarkParameters parameters, BenchmarkCase benchmarkCase) {
+    public List<BenchmarkRecord> runBenchmark(BenchmarkParameters parameters, BenchmarkCase benchmarkCase, PolicyUtil policyUtil) {
 
         // update config by analyzing the generated policies
         var characteristics = new PolicyAnalyzer(benchmarkCase.getPolicyFolderPath()).analyzeSaplDocuments();
-        var subscriptionGenerator = GeneratorFactory.subscriptionGeneratorByType(parameters, benchmarkCase);
+        var subscriptionGenerator = GeneratorFactory.subscriptionGeneratorByType(parameters, benchmarkCase, policyUtil);
 
         log.info("{}", characteristics);
         return run(parameters, benchmarkCase, subscriptionGenerator);
