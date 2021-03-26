@@ -35,13 +35,13 @@ public class FullyRandomPolicyGenerator implements PolicyGenerator {
 
     private static final int DEFAULT_BUFFER = 50;
 
-    private final FullyRandomConfiguration config;
+    private final FullyRandomCase testcase;
     private final PolicyUtil policyUtil;
 
     @Override
     public void generatePolicies(Path folder) throws FileNotFoundException, UnsupportedEncodingException {
-        log.info("Generate {} polices in folder: {}", config.getPolicyCharacteristics().getPolicyCount(), folder);
-        for (int i = 0; i < config.getPolicyCharacteristics().getPolicyCount(); i++) {
+        log.info("Generate {} polices in folder: {}", testcase.getPolicyCount(), folder);
+        for (int i = 0; i < testcase.getPolicyCount(); i++) {
             String name = "p_" + i;
             var filename = folder + File.pathSeparator + name + ".sapl";
             log.info("write policy to: {}", filename);
@@ -55,13 +55,13 @@ public class FullyRandomPolicyGenerator implements PolicyGenerator {
     }
 
     private String generatePolicyString(String name) {
-        final int numberOfVariables = config.getPolicyCharacteristics().getLogicalVariableCount();
+        final int numberOfVariables = testcase.getLogicalVariableCount();
         final int numberOfConnectors = numberOfVariables - 1;
-        final int poolSize = config.getPolicyCharacteristics().getVariablePoolCount();
+        final int poolSize = testcase.getVariablePoolCount();
 
-        final double negationChance = config.getPolicyCharacteristics().getNegationProbability();
-        final double bracketChance = config.getPolicyCharacteristics().getBracketProbability();
-        final double conjunctionChance = config.getPolicyCharacteristics().getConjunctionProbability();
+        final double negationChance = testcase.getNegationProbability();
+        final double bracketChance = testcase.getBracketProbability();
+        final double conjunctionChance = testcase.getConjunctionProbability();
 
         StringBuilder statement = new StringBuilder(DEFAULT_BUFFER).append("policy \"").append(name).append("\"")
                 .append(System.lineSeparator()).append("permit ");

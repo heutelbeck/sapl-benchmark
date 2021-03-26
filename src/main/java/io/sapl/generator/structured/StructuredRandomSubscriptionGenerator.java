@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.sapl.api.pdp.AuthorizationSubscription;
+import io.sapl.domain.model.DomainDataContainer;
 import io.sapl.generator.SubscriptionGenerator;
-import io.sapl.generator.model.DomainSubject;
+import io.sapl.domain.model.DomainSubject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

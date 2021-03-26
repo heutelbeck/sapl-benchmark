@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,maven,intellij,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,maven,intellij,java
 
-bin
+scripts
 .settings
 .project
 .classpath

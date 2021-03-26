@@ -1,4 +1,4 @@
-package io.sapl.benchmark;
+package io.sapl.generator;
 
 import lombok.Builder;
 import lombok.Data;

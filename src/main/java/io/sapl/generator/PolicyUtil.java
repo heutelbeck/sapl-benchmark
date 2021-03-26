@@ -15,9 +15,9 @@
  */
 package io.sapl.generator;
 
-import io.sapl.generator.model.DomainPolicy;
-import io.sapl.generator.model.DomainPolicy.DomainPolicyBody;
-import io.sapl.generator.model.DomainPolicy.DomainPolicyObligation;
+import io.sapl.domain.model.DomainPolicy;
+import io.sapl.domain.model.DomainPolicy.DomainPolicyBody;
+import io.sapl.domain.model.DomainPolicy.DomainPolicyObligation;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;

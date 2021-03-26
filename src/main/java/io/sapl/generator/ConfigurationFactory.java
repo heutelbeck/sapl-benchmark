@@ -1,37 +1,34 @@
 package io.sapl.generator;
 
-import io.sapl.generator.random.FullyRandomConfiguration;
-import io.sapl.generator.structured.StructuredRandomConfiguration;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.sapl.benchmark.BenchmarkCase;
+import io.sapl.benchmark.BenchmarkParameters;
+import io.sapl.benchmark.BenchmarkType;
+import io.sapl.generator.random.FullyRandomBenchmarkConfguration;
+import io.sapl.generator.structured.StructuredRandomBenchmarkConfguration;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
 
+@Slf4j
 @UtilityClass
 public class ConfigurationFactory {
 
-    public List<GeneralConfiguration> parseConfigurationFile(String configurationFile, Path path){
-        //TODO
-        return Collections.emptyList();
-    }
+    private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-    public FullyRandomConfiguration fullyRandomDefault() {
-        return new FullyRandomConfiguration();
-    }
+    public BenchmarkConfiguration<BenchmarkCase> parseConfigurationFile(BenchmarkParameters parameters) throws Exception {
+        var configurationFileClass = parameters.getBenchmarkType() == BenchmarkType.FULLY_RANDOM
+                ? FullyRandomBenchmarkConfguration.class
+                : StructuredRandomBenchmarkConfguration.class;
 
-    public FullyRandomConfiguration parseFullyRandomConfigurationFile(String configurationFile) {
-        return new FullyRandomConfiguration();
-    }
+        BenchmarkConfiguration<BenchmarkCase> configuration = (BenchmarkConfiguration<BenchmarkCase>) mapper
+                .readValue(new File(parameters.getConfigurationFile()), configurationFileClass);
 
-    public StructuredRandomConfiguration structuredRandomDefault() {
-        return new StructuredRandomConfiguration();
-    }
+        log.info("found {} cases in configuration file", configuration.getCases().size());
 
-    public StructuredRandomConfiguration parseStructuredRandomConfigurationFile(String configurationFile) {
-        return new StructuredRandomConfiguration();
+        return configuration;
     }
-
 
 }

@@ -19,10 +19,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.sapl.api.pdp.AuthorizationDecision;
 import io.sapl.api.pdp.AuthorizationSubscription;
 import io.sapl.benchmark.index.IndexFactory;
-import io.sapl.benchmark.index.PolicyAnalyzer;
 import io.sapl.benchmark.results.BenchmarkRecord;
-import io.sapl.generator.GeneralConfiguration;
 import io.sapl.generator.GeneratorFactory;
+import io.sapl.generator.PolicyAnalyzer;
 import io.sapl.generator.PolicyUtil;
 import io.sapl.generator.SubscriptionGenerator;
 import io.sapl.interpreter.EvaluationContext;
@@ -34,7 +33,6 @@ import io.sapl.prp.PolicyRetrievalResult;
 import io.sapl.prp.index.ImmutableParsedDocumentIndex;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -55,23 +53,22 @@ public class BenchmarkExecutor {
     private final PolicyUtil policyUtil;
 
 
-    public List<BenchmarkRecord> runBenchmark(BenchmarkParameters parameters,
-                                              GeneralConfiguration config) {
+    public List<BenchmarkRecord> runBenchmark(BenchmarkParameters parameters, BenchmarkCase benchmarkCase) {
 
         // update config by analyzing the generated policies
-        var characteristics = new PolicyAnalyzer(config.getPolicyFolderPath()).analyzeSaplDocuments();
-        var subscriptionGenerator = GeneratorFactory.subscriptionGeneratorByType(parameters, config);
+        var characteristics = new PolicyAnalyzer(benchmarkCase.getPolicyFolderPath()).analyzeSaplDocuments();
+        var subscriptionGenerator = GeneratorFactory.subscriptionGeneratorByType(parameters, benchmarkCase);
 
         log.info("{}", characteristics);
-        return run(parameters, config, subscriptionGenerator);
+        return run(parameters, benchmarkCase, subscriptionGenerator);
     }
 
-    private List<BenchmarkRecord> run(BenchmarkParameters parameters, GeneralConfiguration config,
+    private List<BenchmarkRecord> run(BenchmarkParameters parameters, BenchmarkCase benchmarkCase,
                                       SubscriptionGenerator subscriptionGenerator) {
 
         List<BenchmarkRecord> results = new LinkedList<>();
 
-        log.info("running benchmark with config={}, runs={}", config.getName(), parameters.getBenchmarkRuns());
+        log.info("running benchmark with config={}, runs={}", benchmarkCase.getName(), parameters.getBenchmarkRuns());
 
         try {
             log.debug("init index");
@@ -79,7 +76,7 @@ public class BenchmarkExecutor {
             long begin = System.nanoTime();
             log.info("Load generated polices into index...");
             var initializedIndex = IndexFactory.indexByTypeForDocumentsIn(parameters.getIndexType(),
-                    config.getPolicyFolderPath().toString());
+                    benchmarkCase.getPolicyFolderPath().toString());
 
             double timePreparation = nanoToMs(System.nanoTime() - begin);
 
@@ -113,7 +110,7 @@ public class BenchmarkExecutor {
                 // .combineMatchingDocuments(result.getMatchingDocuments(), false,
                 // request, ATTRIBUTE_CONTEXT, FUNCTION_CONTEXT, VARIABLES).blockFirst();
                 // Objects.requireNonNull(decision);
-                results.add(new BenchmarkRecord(j, config.getName(), timePreparation, timeRetrieve,
+                results.add(new BenchmarkRecord(j, benchmarkCase.getName(), timePreparation, timeRetrieve,
                         "AuthorizationSubscription", buildResponseStringForResult(result, decision)));
 
                 log.debug("Total : {}ms", timeRetrieve);

@@ -1,8 +1,8 @@
 package io.sapl.benchmark.results;
 
-import io.sapl.benchmark.PolicyCharacteristics;
+import io.sapl.benchmark.BenchmarkCase;
 import io.sapl.benchmark.index.IndexType;
-import io.sapl.generator.GeneralConfiguration;
+import io.sapl.generator.PolicyCharacteristics;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jxls.template.SimpleExporter;
@@ -196,18 +196,18 @@ public class BenchmarkResultWriter {
         }
     }
 
-    public void addResultsForConfigToContainer(BenchmarkResultContainer resultContainer,
-                                               GeneralConfiguration config, List<BenchmarkRecord> results) {
+    public void addResultsForCaseToContainer(BenchmarkResultContainer resultContainer,
+                                             BenchmarkCase benchmarkCase, List<BenchmarkRecord> results) {
         sanitizeResults(results);
 
-        resultContainer.getIdentifier().add(config.getName());
+        resultContainer.getIdentifier().add(benchmarkCase.getName());
         resultContainer.getMinValues().add(extractMin(results));
         resultContainer.getMaxValues().add(extractMax(results));
         resultContainer.getAvgValues().add(extractAvg(results));
         resultContainer.getMdnValues().add(extractMdn(results));
         resultContainer.getData().addAll(results);
 
-        resultContainer.getSeeds().add(config.getSeed());
+        resultContainer.getSeeds().add(benchmarkCase.getSeed());
     }
 
     private double extractMin(Iterable<BenchmarkRecord> data) {

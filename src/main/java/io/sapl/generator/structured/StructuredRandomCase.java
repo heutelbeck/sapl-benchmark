@@ -1,16 +1,13 @@
 package io.sapl.generator.structured;
 
-import io.sapl.generator.GeneralConfiguration;
+import io.sapl.benchmark.BenchmarkCase;
 import lombok.Data;
 
 @Data
-public class StructuredRandomConfiguration extends GeneralConfiguration {
+public class StructuredRandomCase extends BenchmarkCase {
 
-//    String name = "";
-//    private long seed = 0L;
 
     boolean cleanPolicyDirectory = true;
-    //    long seed = 2454325;
 
     // #### DOMAIN ####
     int numberOfSubjects = 100;
@@ -39,7 +36,7 @@ public class StructuredRandomConfiguration extends GeneralConfiguration {
     double probabilityCustomAccessOnResource = 0.8D;
 
     // AuthorizationSubscription Generation
-    int numberOfBenchmarkRuns = 300;
+
     int subscriptionGenerationFactor = 5;
     double probabilityEmptySubscription = 0.95D;
     double probabilityEmptySubscriptionNode = 0.8D;

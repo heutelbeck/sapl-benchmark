@@ -1,5 +1,6 @@
 package io.sapl.benchmark.index;
 
+import io.sapl.benchmark.BenchmarkCase;
 import io.sapl.benchmark.BenchmarkExecutor;
 import io.sapl.benchmark.BenchmarkParameters;
 import io.sapl.benchmark.BenchmarkType;
@@ -7,8 +8,8 @@ import io.sapl.benchmark.results.BenchmarkRecord;
 import io.sapl.benchmark.results.BenchmarkResultContainer;
 import io.sapl.benchmark.results.BenchmarkResultWriter;
 import io.sapl.benchmark.util.ManifestVersionProvider;
+import io.sapl.generator.BenchmarkConfiguration;
 import io.sapl.generator.ConfigurationFactory;
-import io.sapl.generator.GeneralConfiguration;
 import io.sapl.generator.GeneratorFactory;
 import io.sapl.generator.PolicyUtil;
 import lombok.ToString;
@@ -65,31 +66,31 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
         log.info("Benchmark parameters: {}", parameters);
 
 
-        List<GeneralConfiguration> configurations = ConfigurationFactory
-                .parseConfigurationFile(parameters.getConfigurationFile(), tempDirectory.toAbsolutePath());
+        BenchmarkConfiguration<BenchmarkCase> configuration = ConfigurationFactory.parseConfigurationFile(parameters);
 
         var resultWriter = new BenchmarkResultWriter(parameters.getOutputPath(), parameters.getIndexType());
         var resultContainer = new BenchmarkResultContainer(parameters);
 
 
-        for (GeneralConfiguration configuration : configurations) {
-            var policyUtil = new PolicyUtil(parameters.isPerformCleanBenchmark(), configuration.getSeed());
+        for (BenchmarkCase benchmarkCase : configuration.getCases()) {
+            var policyUtil = new PolicyUtil(parameters.isPerformCleanBenchmark(), benchmarkCase.getSeed());
 
             log.info("Generating policies ...");
 
-            var generator = GeneratorFactory.policyGeneratorByType(parameters, configuration, policyUtil);
+            var generator = GeneratorFactory.policyGeneratorByType(parameters, benchmarkCase, policyUtil);
             generator.generatePolicies(tempDirectory);
 
 
             log.info("Running benchmark ...");
 
             var executor = new BenchmarkExecutor(policyUtil);
-            List<BenchmarkRecord> results = executor.runBenchmark(parameters, configuration);
-            resultWriter.addResultsForConfigToContainer(resultContainer, configuration, results);
+            List<BenchmarkRecord> results = executor.runBenchmark(parameters, benchmarkCase);
+            resultWriter.addResultsForCaseToContainer(resultContainer, benchmarkCase, results);
 
             double[] times = new double[results.size()];
-            resultWriter.writeDetailsChart(results, times, configuration.getName());
-            resultWriter.addSeriesToOverviewChart(times, configuration.getName());
+            resultWriter.writeDetailsChart(results, times, benchmarkCase.getName());
+            resultWriter.addSeriesToOverviewChart(times, benchmarkCase.getName());
+
         }
 
         log.info("Benchmark completed. Writing results ...");

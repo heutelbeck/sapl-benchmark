@@ -15,14 +15,15 @@
  */
 package io.sapl.generator.structured;
 
+import io.sapl.domain.model.DomainDataContainer;
 import io.sapl.generator.PolicyGenerator;
 import io.sapl.generator.PolicyUtil;
-import io.sapl.generator.model.DomainActions;
-import io.sapl.generator.model.DomainPolicy;
-import io.sapl.generator.model.DomainPolicy.DomainPolicyObligation;
-import io.sapl.generator.model.DomainResource;
-import io.sapl.generator.model.DomainRole;
-import io.sapl.generator.model.DomainSubject;
+import io.sapl.domain.model.DomainActions;
+import io.sapl.domain.model.DomainPolicy;
+import io.sapl.domain.model.DomainPolicy.DomainPolicyObligation;
+import io.sapl.domain.model.DomainResource;
+import io.sapl.domain.model.DomainRole;
+import io.sapl.domain.model.DomainSubject;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -298,14 +299,14 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
     private void collectAccessingRoles(List<DomainRole> rolesWithRestrictedAccess, DomainResource resource) {
         for (DomainRole role : rolesWithRestrictedAccess) {
             boolean fullAccessOnResource = policyUtil
-                    .rollIsLowerThanProbability(domainDataContainer.getConfiguration()
+                    .rollIsLowerThanProbability(domainDataContainer.getStructuredRandomCase()
                             .getProbabilityFullAccessOnResource());
             if (fullAccessOnResource) {
                 resource.getFullAccessRoles().add(role);
                 continue;
             }
             boolean readAccessOnResource = policyUtil
-                    .rollIsLowerThanProbability(domainDataContainer.getConfiguration()
+                    .rollIsLowerThanProbability(domainDataContainer.getStructuredRandomCase()
                             .getProbabilityReadAccessOnResource());
             if (readAccessOnResource) {
                 resource.getReadAccessRoles().add(role);
@@ -372,7 +373,7 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
 
         for (DomainSubject subject : allSubjects) {
             String subjectName = subject.getSubjectName();
-            for (int i = 0; i < domainDataContainer.getConfiguration().getNumberOfRolesPerSubject(); i++) {
+            for (int i = 0; i < domainDataContainer.getStructuredRandomCase().getNumberOfRolesPerSubject(); i++) {
                 String policyName = String.format("policy %d for %s", i, subjectName);
 
                 StringBuilder policyBuilder = generateEmptyPolicy(policyName, true);

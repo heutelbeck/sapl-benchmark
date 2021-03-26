@@ -1,14 +1,12 @@
 package io.sapl.benchmark.results;
 
 import io.sapl.benchmark.BenchmarkParameters;
-import io.sapl.benchmark.PolicyCharacteristics;
+import io.sapl.generator.PolicyCharacteristics;
 import io.sapl.benchmark.index.IndexType;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Data

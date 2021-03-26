@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.sapl.api.pdp.AuthorizationSubscription;
+import io.sapl.domain.model.DomainDataContainer;
+import io.sapl.generator.PolicyCharacteristics;
 import io.sapl.generator.SubscriptionGenerator;
-import io.sapl.generator.structured.DomainDataContainer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class FullyRandomSubscriptionGenerator implements SubscriptionGenerator {
 
     private final DomainDataContainer domainDataContainer;
-    private final FullyRandomConfiguration configuration;
+    private final PolicyCharacteristics policyCharacteristics;
 
     @Override
     public List<AuthorizationSubscription> generateSubscriptions(int numberOfSubscriptions) {
@@ -37,7 +38,7 @@ public class FullyRandomSubscriptionGenerator implements SubscriptionGenerator {
     public AuthorizationSubscription createFullyRandomSubscription() {
         ObjectNode resource = JsonNodeFactory.instance.objectNode();
         for (String var : getVariables()) {
-            resource = resource.put(var, (roll() >= configuration.getPolicyCharacteristics().getFalseProbability()));
+            resource = resource.put(var, (roll() >= policyCharacteristics.getFalseProbability()));
         }
         return new AuthorizationSubscription(NullNode.getInstance(), NullNode.getInstance(), resource,
                 NullNode.getInstance());
@@ -45,7 +46,7 @@ public class FullyRandomSubscriptionGenerator implements SubscriptionGenerator {
 
     public Collection<String> getVariables() {
         HashSet<String> variables = new HashSet<>();
-        for (int i = 0; i < configuration.getPolicyCharacteristics().getVariablePoolCount(); i++) {
+        for (int i = 0; i < policyCharacteristics.getVariablePoolCount(); i++) {
             variables.add("x" + i);
         }
         return variables;
