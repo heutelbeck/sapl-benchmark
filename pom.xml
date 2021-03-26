@@ -161,7 +161,7 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <!-- Declares the entry point when running the JAR -->
-							<mainClass>io.sapl.benchmarks.index.BenchmarkMain</mainClass>
+							<mainClass>io.sapl.benchmark.BenchmarkMain</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
