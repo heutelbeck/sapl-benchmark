@@ -4,13 +4,13 @@ import io.sapl.benchmark.BenchmarkCase;
 import io.sapl.benchmark.BenchmarkExecutor;
 import io.sapl.benchmark.BenchmarkParameters;
 import io.sapl.benchmark.BenchmarkType;
-import io.sapl.benchmark.results.BenchmarkRecord;
 import io.sapl.benchmark.results.BenchmarkResultContainer;
 import io.sapl.benchmark.results.BenchmarkResultWriter;
 import io.sapl.benchmark.util.ManifestVersionProvider;
 import io.sapl.generator.BenchmarkConfiguration;
 import io.sapl.generator.ConfigurationFactory;
 import io.sapl.generator.GeneratorFactory;
+import io.sapl.generator.PolicyAnalyzer;
 import io.sapl.generator.PolicyUtil;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,6 @@ import picocli.CommandLine.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 @Slf4j
@@ -65,36 +64,36 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
                 .build();
         log.info("Benchmark parameters: {}", parameters);
 
-
         BenchmarkConfiguration<BenchmarkCase> configuration = ConfigurationFactory.parseConfigurationFile(parameters);
 
-        var resultWriter = new BenchmarkResultWriter(parameters.getOutputPath(), parameters.getIndexType());
+        var resultWriter = new BenchmarkResultWriter(parameters);
         var resultContainer = new BenchmarkResultContainer(parameters);
-
 
         for (BenchmarkCase benchmarkCase : configuration.getCases()) {
             var policyUtil = new PolicyUtil(parameters.isPerformCleanBenchmark(), benchmarkCase.getSeed());
 
-            log.info("Generating policies ...");
-
+            log.info("Generating policies...");
             var generator = GeneratorFactory.policyGeneratorByType(parameters, benchmarkCase, policyUtil);
             generator.generatePolicies(tempDirectory);
             benchmarkCase.setPolicyFolderPath(tempDirectory);
 
+            log.info("Analyzing policies...");
+            var characteristics = new PolicyAnalyzer(benchmarkCase.getPolicyFolderPath()).analyzeSaplDocuments();
 
-            log.info("Running benchmark ...");
-
+            log.info("Running benchmark...");
             var executor = new BenchmarkExecutor(policyUtil);
-            List<BenchmarkRecord> results = executor.runBenchmark(parameters, benchmarkCase, policyUtil);
-            resultWriter.addResultsForCaseToContainer(resultContainer, benchmarkCase, results);
+            var results = executor.runBenchmark(parameters, benchmarkCase);
+            resultWriter.addResultsForCaseToContainer(resultContainer, benchmarkCase, results, characteristics);
 
+
+            log.info("Writing results...");
             double[] times = new double[results.size()];
             resultWriter.writeDetailsChart(results, times, benchmarkCase.getName());
             resultWriter.addSeriesToOverviewChart(times, benchmarkCase.getName());
 
         }
 
-        log.info("Benchmark completed. Writing results ...");
+        log.info("Benchmark completed. Writing final results ...");
 
         resultWriter.writeFinalResults(resultContainer);
 

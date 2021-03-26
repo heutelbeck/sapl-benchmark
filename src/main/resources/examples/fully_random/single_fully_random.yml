@@ -1,0 +1,13 @@
+---
+benchmarkIdentifier: fully_random_default_benchmark
+cases:
+    -
+        name: 100p, 5v, 200vp
+        seed: 29724
+        policyCount: 100
+        logicalVariableCount: 5
+        variablePoolCount: 200
+        bracketProbability: 0.2
+        conjunctionProbability: 0.9
+        negationProbability: 0.3
+        falseProbability: 0.5

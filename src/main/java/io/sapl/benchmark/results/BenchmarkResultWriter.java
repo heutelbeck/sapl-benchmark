@@ -1,9 +1,11 @@
 package io.sapl.benchmark.results;
 
+import com.google.common.base.Strings;
 import io.sapl.benchmark.BenchmarkCase;
+import io.sapl.benchmark.BenchmarkParameters;
+import io.sapl.benchmark.BenchmarkType;
 import io.sapl.benchmark.index.IndexType;
 import io.sapl.generator.PolicyCharacteristics;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jxls.template.SimpleExporter;
 import org.knowm.xchart.BitmapEncoder;
@@ -12,6 +14,7 @@ import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XYChart;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,6 +22,8 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -26,7 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 public class BenchmarkResultWriter {
 
     private static final int DEFAULT_HEIGHT = 1080;
@@ -34,7 +38,6 @@ public class BenchmarkResultWriter {
 
     private static final double REMOVE_EDGE_DATA_BY_PERCENTAGE = 0.005D;
 
-    private static final String ERROR_READING_TEST_CONFIGURATION = "Error reading test configuration";
     private static final String ERROR_WRITING_BITMAP = "Error writing bitmap";
     private static final String EXPORT_PROPERTIES = "number, name, timePreparation, timeDuration, request, response";
     private static final String EXPORT_PROPERTIES_AGGREGATES = "name, min, max, avg, mdn, seed, policyCount, variableCount, runs, iterations";
@@ -43,6 +46,29 @@ public class BenchmarkResultWriter {
     private final IndexType indexType;
 
     private final XYChart overviewChart = new XYChart(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+    public BenchmarkResultWriter(BenchmarkParameters parameters) {
+        this.indexType = parameters.getIndexType();
+
+        var filePrefix = Strings.isNullOrEmpty(parameters.getFilePrefix())
+                ? generateFilePrefix(indexType, null) : parameters.getFilePrefix();
+
+        var outputPath = parameters.getOutputPath() + filePrefix;
+        if (!outputPath.endsWith(File.separator))
+            outputPath += File.separator;
+
+        this.resultPath = outputPath;
+
+        prepareResultDirectory();
+    }
+
+    private void prepareResultDirectory() {
+        File directory = new File(this.resultPath);
+        if (!directory.exists()) {
+            log.info("result directory {} is not existing. mkdirs", resultPath);
+            directory.mkdirs();
+        }
+    }
 
     public void writeFinalResults(BenchmarkResultContainer resultContainer) {
         log.info("writing charts and results to {}", resultPath);
@@ -197,7 +223,7 @@ public class BenchmarkResultWriter {
     }
 
     public void addResultsForCaseToContainer(BenchmarkResultContainer resultContainer,
-                                             BenchmarkCase benchmarkCase, List<BenchmarkRecord> results) {
+                                             BenchmarkCase benchmarkCase, List<BenchmarkRecord> results, PolicyCharacteristics characteristics) {
         sanitizeResults(results);
 
         resultContainer.getIdentifier().add(benchmarkCase.getName());
@@ -208,6 +234,8 @@ public class BenchmarkResultWriter {
         resultContainer.getData().addAll(results);
 
         resultContainer.getSeeds().add(benchmarkCase.getSeed());
+
+        resultContainer.getCharacteristics().add(characteristics);
     }
 
     private double extractMin(Iterable<BenchmarkRecord> data) {
@@ -246,5 +274,10 @@ public class BenchmarkResultWriter {
         } else {
             return list.get(index);
         }
+    }
+
+    public String generateFilePrefix(IndexType indexType, BenchmarkType benchmarkType) {
+        return String.format("%s_%s_%s%s", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), indexType,
+                benchmarkType, File.separator).replace(':', '-');
     }
 }
