@@ -44,9 +44,9 @@ public class FullyRandomPolicyGenerator implements PolicyGenerator {
         for (int i = 0; i < testcase.getPolicyCount(); i++) {
             String name = "p_" + i;
             var filename = folder + File.pathSeparator + name + ".sapl";
-            log.info("write policy to: {}", filename);
+            log.trace("write policy to: {}", filename);
             var policy = generatePolicyString(name);
-            log.info("policy: {}", policy);
+            log.trace("policy: {}", policy);
             try (PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8.name())) {
                 writer.println(policy);
             }

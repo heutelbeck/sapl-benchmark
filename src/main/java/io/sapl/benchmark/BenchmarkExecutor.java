@@ -21,7 +21,6 @@ import io.sapl.api.pdp.AuthorizationSubscription;
 import io.sapl.benchmark.index.IndexFactory;
 import io.sapl.benchmark.results.BenchmarkRecord;
 import io.sapl.generator.GeneratorFactory;
-import io.sapl.generator.PolicyAnalyzer;
 import io.sapl.generator.PolicyUtil;
 import io.sapl.generator.SubscriptionGenerator;
 import io.sapl.interpreter.EvaluationContext;
@@ -58,7 +57,7 @@ public class BenchmarkExecutor {
 
         var subscriptionGenerator = GeneratorFactory.subscriptionGeneratorByType(parameters, benchmarkCase, policyUtil);
 
-        log.info("running benchmark with config={}, runs={}", benchmarkCase.getName(), parameters.getBenchmarkRuns());
+        log.info("running benchmark with config={}, runs={}", benchmarkCase.getName(), parameters.getRunsPerCase());
 
         try {
             log.debug("init index");
@@ -75,9 +74,9 @@ public class BenchmarkExecutor {
 
             // generate AuthorizationSubscription
             List<AuthorizationSubscription> subscriptions =
-                    subscriptionGenerator.generateSubscriptions(parameters.getBenchmarkRuns());
+                    subscriptionGenerator.generateSubscriptions(parameters.getRunsPerCase());
 
-            for (int j = 0; j < parameters.getBenchmarkRuns(); j++) {
+            for (int j = 0; j < parameters.getRunsPerCase(); j++) {
 
                 AuthorizationSubscription request = policyUtil.getRandomElement(subscriptions);
 

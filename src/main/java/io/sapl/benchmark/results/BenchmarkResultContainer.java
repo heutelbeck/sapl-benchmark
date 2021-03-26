@@ -38,7 +38,7 @@ public class BenchmarkResultContainer {
         this.runtimeInfo = String.format("%s_%s", System.getProperty("java.vendor"),
                 System.getProperty("java.version"));
         this.indexType = configuration.getIndexType();
-        this.runs = configuration.getBenchmarkRuns();
+        this.runs = configuration.getRunsPerCase();
         this.iterations = configuration.getBenchmarkIterations();
     }
 }

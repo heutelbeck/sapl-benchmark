@@ -16,7 +16,7 @@ public class BenchmarkParameters {
 
     BenchmarkType benchmarkType;
 
-    int benchmarkRuns;
+    int runsPerCase;
 
     int benchmarkIterations;
 
@@ -26,10 +26,6 @@ public class BenchmarkParameters {
 
     String configurationFile;
 
-    boolean performCleanBenchmark;
-
-    public String getName() {
-        return String.format("Bench_%d_%s", seed, indexType);
-    }
+    boolean deletePoliciesAfterBenchmark;
 
 }
