@@ -8,9 +8,9 @@ import lombok.Data;
 @Builder
 public class BenchmarkParameters {
 
-    String name;
+    //    String name;
 
-    long seed;
+    //    long seed;
 
     IndexType indexType;
 

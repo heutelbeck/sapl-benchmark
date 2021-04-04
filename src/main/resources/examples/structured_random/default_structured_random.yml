@@ -1,31 +1,148 @@
 ---
-benchmarkIdentifier: structured_random_default_benchmark
+benchmarkIdentifier: structured_random_single_benchmark
 cases:
     -
-        name: 100p, 5v, 200vp
+        name: 5k policies
+        seed: 3242
         cleanPolicyDirectory: true
         #subjects
-        numberOfSubjects: 100;
-        limitOfSubjectRoles: 5;
-        numberOfLockedSubjects: 0;
+        numberOfSubjects: 100
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
         #actions
-        numberOfActions: 150;
+        numberOfActions: 150
         #resources
-        numberOfGeneralResources: 300;
-        probabilityOfExtendedResource: 0.4D;
-        probabilityOfUnrestrictedResource: 0.1D;
+        numberOfGeneralResources: 300
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
         #roles
-        numberOfGeneralRoles: 30;
-        numberOfRolesPerSubject: 1;
-        probabilityOfExtendedRole: 0.6D;
-        probabilityOfGeneralFullAccessRole: 0.1D;
-        probabilityOfGeneralReadAccessRole: 0.1D;
-        probabilityOfGeneralCustomAccessRole: 0.2D;
+        numberOfGeneralRoles: 30
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
         #per resource & role
-        probabilityFullAccessOnResource: 0.2D;
-        probabilityReadAccessOnResource: 0.3D;
-        probabilityCustomAccessOnResource: 0.8D;
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
         #AuthorizationSubscription Generation
-        subscriptionGenerationFactor: 5;
-        probabilityEmptySubscription: 0.95D;
-        probabilityEmptySubscriptionNode: 0.8D;
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 15k policies
+        seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 250
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 250
+        #resources
+        numberOfGeneralResources: 500
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 50
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 25k policies
+        seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 275
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 350
+        #resources
+        numberOfGeneralResources: 700
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 65
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 30k policies
+        seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 275
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 350
+        #resources
+        numberOfGeneralResources: 700
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 80
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 40k policies
+        seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 300
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 350
+        #resources
+        numberOfGeneralResources: 800
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 100
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8

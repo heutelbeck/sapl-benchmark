@@ -7,9 +7,9 @@ import java.nio.file.Path;
 @Data
 public class BenchmarkCase {
 
-    String name;
+    protected String name;
 
-    long seed;
+    protected long seed;
 
     Path policyFolderPath;
 

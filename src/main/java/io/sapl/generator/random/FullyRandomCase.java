@@ -14,11 +14,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FullyRandomCase extends BenchmarkCase {
 
-    public static FullyRandomCase DEFAULT = FullyRandomCase.builder().name("default").seed(0L).build();
+    //    String name;
 
-    String name;
-
-    long seed;
+    //    long seed;
 
     int policyCount;
 

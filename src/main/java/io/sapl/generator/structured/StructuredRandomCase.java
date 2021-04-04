@@ -1,11 +1,21 @@
 package io.sapl.generator.structured;
 
 import io.sapl.benchmark.BenchmarkCase;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StructuredRandomCase extends BenchmarkCase {
 
+    //    String name;
+    //    long seed;
 
     boolean cleanPolicyDirectory = true;
 

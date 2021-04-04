@@ -60,22 +60,22 @@ public class PolicyUtil {
     public void writeDomainPoliciesToFilesystem(List<DomainPolicy> domainPolicies, String policyPath) {
         log.info("writing policies to folder: {}", policyPath);
 
-        File policyDir = new File(policyPath);
-        boolean directoryCreated = policyDir.mkdir();
-        if (!directoryCreated)
-            throw new RuntimeException("policy directory could not be created");
-
-        logDirectorySize("before clean fileCount:{}", policyDir);
-        if (cleanDirectory)
-            cleanPolicyDirectory(policyPath);
-
-        logDirectorySize("after clean fileCount:{}", policyDir);
+        //        File policyDir = new File(policyPath);
+        //        boolean directoryCreated = policyDir.mkdir();
+        //        if (!directoryCreated)
+        //            throw new RuntimeException("policy directory could not be created");
+        //
+        //        logDirectorySize("before clean fileCount:{}", policyDir);
+        //        if (cleanDirectory)
+        //            cleanPolicyDirectory(policyPath);
+        //
+        //        logDirectorySize("after clean fileCount:{}", policyDir);
 
         for (DomainPolicy domainPolicy : domainPolicies) {
             writePolicyToFile(domainPolicy, policyPath);
         }
 
-        logDirectorySize("after write policy fileCount:{}", policyDir);
+        //        logDirectorySize("after write policy fileCount:{}", policyDir);
     }
 
     private void logDirectorySize(String message, File policyDir) {
@@ -154,7 +154,7 @@ public class PolicyUtil {
         return dice.nextInt(supremum);
     }
 
-    public  <T> T getRandomElement(List<T> list) {
+    public <T> T getRandomElement(List<T> list) {
         return list.get(dice.nextInt(list.size()));
     }
 

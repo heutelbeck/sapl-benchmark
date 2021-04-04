@@ -1,7 +1,6 @@
 package io.sapl.generator.random;
 
 import io.sapl.generator.BenchmarkConfiguration;
-import io.sapl.generator.random.FullyRandomCase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -62,7 +62,7 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
         log.info("Results will be written to: {}", outputDirectory.toAbsolutePath());
 
         var parameters = BenchmarkParameters.builder()
-                .seed(0L)
+//                .seed(0L)
                 .indexType(indexType)
                 .benchmarkType(benchmarkType)
                 .runsPerCase(numberOfRunsPerCase)

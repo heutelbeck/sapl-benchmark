@@ -1,0 +1,32 @@
+---
+benchmarkIdentifier: structured_random_single_benchmark
+cases:
+    -
+        name: 5k policies
+        seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 100
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 150
+        #resources
+        numberOfGeneralResources: 300
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 30
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
