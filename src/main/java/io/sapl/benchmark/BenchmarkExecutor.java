@@ -91,7 +91,8 @@ public class BenchmarkExecutor {
 
                 long end = System.nanoTime();
 
-                double timeRetrieve = nanoToMs(end - start);
+                //                double timeRetrieve = nanoToMs(end - start);
+                double timeRetrieve = end - start;
 
                 // Objects.requireNonNull(result);
                 AuthorizationDecision decision = AuthorizationDecision.INDETERMINATE;

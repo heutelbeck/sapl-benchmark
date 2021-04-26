@@ -44,7 +44,7 @@ public class IndexFactory {
 
     private PrpUpdateEvent fetchInitialUpdateEvent(String policiesFolder) {
         return new FileSystemPrpUpdateEventSource(policiesFolder, new DefaultSAPLInterpreter()).getUpdates()
-                .doOnNext(update -> log.info("Initialize index with update event: {}", update)).blockFirst();
+                .doOnNext(update -> log.debug("Initialize index with update event: {}", update)).blockFirst();
     }
 
 }

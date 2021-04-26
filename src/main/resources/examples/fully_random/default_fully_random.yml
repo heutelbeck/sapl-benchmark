@@ -2,6 +2,26 @@
 benchmarkIdentifier: fully_random_default_benchmark
 cases:
     -
+        name: 50p, 5v, 200vp
+        seed: 12415
+        policyCount: 50
+        logicalVariableCount: 5
+        variablePoolCount: 200
+        bracketProbability: 0.2
+        conjunctionProbability: 0.9
+        negationProbability: 0.3
+        falseProbability: 0.5
+    -
+        name: 50p, 10v, 200vp
+        seed: 34654
+        policyCount: 50
+        logicalVariableCount: 10
+        variablePoolCount: 200
+        bracketProbability: 0.2
+        conjunctionProbability: 0.9
+        negationProbability: 0.3
+        falseProbability: 0.5
+    -
         name: 100p, 5v, 200vp
         seed: 29724
         policyCount: 100
