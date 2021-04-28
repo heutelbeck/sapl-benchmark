@@ -233,9 +233,10 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
     }
 
     private void handleReadAccessRoles(List<DomainPolicy> policies, DomainResource resource) {
-        String policyName = resource.getResourceName() + "_read_roles";
-        List<DomainRole> readAccessRoles = resource.getReadAccessRoles();
-        List<DomainRole> extendedRoles = resource.getReadAccessRoles().stream().filter(DomainRole::isExtensionRequired)
+        String policyName = resource.getResourceName() + "_read-roles";
+
+        List<DomainRole> readAccessRoles = resource.getFullAccessRoles();
+        List<DomainRole> extendedReadAccessRoles = readAccessRoles.stream().filter(DomainRole::isExtensionRequired)
                 .collect(Collectors.toList());
 
         if (resource.isExtensionRequired()) {
@@ -245,19 +246,21 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
             addActionsToPolicy(extendedPolicyBuilder, DomainActions.READ_ONLY.getActionList());
             addObligationToPolicy(extendedPolicyBuilder, PolicyUtil.LOG_OBLIGATION);
             policies.add(new DomainPolicy(policyName, extendedPolicyBuilder.toString(), policyName));
-
         } else {
             // handle extended roles
-            if (!extendedRoles.isEmpty()) {
-                policyName += "_extended";
-                StringBuilder extendedPolicyBuilder = generateBasePolicy(policyName, Collections.singletonList(resource));
-                addRolesToPolicy(extendedPolicyBuilder, extendedRoles, false);
-                addActionsToPolicy(extendedPolicyBuilder, DomainActions.READ_ONLY.getActionList());
-                addObligationToPolicy(extendedPolicyBuilder, PolicyUtil.LOG_OBLIGATION);
-                policies.add(new DomainPolicy(policyName, extendedPolicyBuilder.toString(), policyName));
+            if (!extendedReadAccessRoles.isEmpty()) {
+                for (DomainRole extendedRole : extendedReadAccessRoles) {
+                    String rolePolicyName = resource.getResourceName() + "_read_" + extendedRole.getRoleName();
+                    StringBuilder rolePolicyBuilder = generateBasePolicy(rolePolicyName,
+                            Collections.singletonList(resource));
+                    addRolesToPolicy(rolePolicyBuilder, Collections.singletonList(extendedRole), false);
+                    addActionsToPolicy(rolePolicyBuilder, DomainActions.READ_ONLY.getActionList());
+                    addObligationToPolicy(rolePolicyBuilder, PolicyUtil.LOG_OBLIGATION);
 
+                    policies.add(new DomainPolicy(rolePolicyName, rolePolicyBuilder.toString(), rolePolicyName));
+                }
                 // prevent double handling of extended roles for resource
-                readAccessRoles.removeAll(extendedRoles);
+                readAccessRoles.removeAll(extendedReadAccessRoles);
             }
             // handle roles without extension
             if (!readAccessRoles.isEmpty()) {
