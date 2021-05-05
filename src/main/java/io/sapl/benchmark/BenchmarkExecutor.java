@@ -16,13 +16,14 @@
 package io.sapl.benchmark;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.sapl.api.pdp.AuthorizationDecision;
 import io.sapl.api.pdp.AuthorizationSubscription;
 import io.sapl.benchmark.index.IndexFactory;
 import io.sapl.benchmark.results.BenchmarkRecord;
 import io.sapl.generator.GeneratorFactory;
 import io.sapl.generator.PolicyUtil;
 import io.sapl.generator.SubscriptionGenerator;
+import io.sapl.grammar.sapl.AuthorizationDecisionEvaluable;
+import io.sapl.grammar.sapl.SAPL;
 import io.sapl.interpreter.EvaluationContext;
 import io.sapl.interpreter.functions.AnnotationFunctionContext;
 import io.sapl.interpreter.functions.FunctionContext;
@@ -30,9 +31,9 @@ import io.sapl.interpreter.pip.AnnotationAttributeContext;
 import io.sapl.interpreter.pip.AttributeContext;
 import io.sapl.prp.PolicyRetrievalResult;
 import io.sapl.prp.index.ImmutableParsedDocumentIndex;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -67,7 +68,7 @@ public class BenchmarkExecutor {
             var initializedIndex = IndexFactory.indexByTypeForDocumentsIn(parameters.getIndexType(),
                     benchmarkCase.getPolicyFolderPath().toString());
 
-            double timePreparation = nanoToMs(System.nanoTime() - begin);
+            double timePreparation = System.nanoTime() - begin;
 
             // warm up
             warmUp(initializedIndex);
@@ -94,14 +95,8 @@ public class BenchmarkExecutor {
                 //                double timeRetrieve = nanoToMs(end - start);
                 double timeRetrieve = end - start;
 
-                // Objects.requireNonNull(result);
-                AuthorizationDecision decision = AuthorizationDecision.INDETERMINATE;
-                // AuthorizationDecision decision = DOCUMENTS_COMBINATOR
-                // .combineMatchingDocuments(result.getMatchingDocuments(), false,
-                // request, ATTRIBUTE_CONTEXT, FUNCTION_CONTEXT, VARIABLES).blockFirst();
-                // Objects.requireNonNull(decision);
                 results.add(new BenchmarkRecord(j, benchmarkCase.getName(), timePreparation, timeRetrieve,
-                        "AuthorizationSubscription", buildResponseStringForResult(result, decision)));
+                        request.toString(), getNumberOfMatchingPolicies(result), getMatchingPolicyNames(result)));
 
                 log.debug("Total : {}ms", timeRetrieve);
             }
@@ -129,11 +124,27 @@ public class BenchmarkExecutor {
         }
     }
 
-    private String buildResponseStringForResult(@NonNull PolicyRetrievalResult policyRetrievalResult,
-                                                @NonNull AuthorizationDecision decision) {
-        return String.format("PolicyRetrievalResult(decision=%s, matchingDocumentsCount=%d, errorsInTarget=%b)",
-                decision.getDecision(), policyRetrievalResult.getMatchingDocuments().size(),
-                policyRetrievalResult.isErrorsInTarget());
+
+    private String getMatchingPolicyNames(PolicyRetrievalResult result) {
+        val sb = new StringBuilder();
+        sb.append("[");
+
+        for (AuthorizationDecisionEvaluable decisionEvaluable : result.getMatchingDocuments()) {
+            if (decisionEvaluable instanceof SAPL) {
+                sb.append(((SAPL) decisionEvaluable).getPolicyElement().getSaplName());
+            } else {
+                sb.append(decisionEvaluable);
+            }
+            sb.append(", ");
+        }
+
+        sb.append("]");
+
+        return sb.toString();
+    }
+
+    private String getNumberOfMatchingPolicies(PolicyRetrievalResult result) {
+        return "" + result.getMatchingDocuments().size();
     }
 
 

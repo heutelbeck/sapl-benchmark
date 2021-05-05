@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @RequiredArgsConstructor
@@ -38,21 +37,20 @@ public class DomainActions {
     public static final DomainActions NONE = new DomainActions(Collections.emptyList(), false);
 
 
-    public List<String> generateActionsForResource(String resource) {
-        return getActionList().stream().map(action -> action + resource).collect(Collectors.toList());
-    }
-
-
     public static List<String> generateCustomActionList(DomainDataContainer domainDataContainer) {
         int numberOfActions = domainDataContainer.getPolicyUtil()
                 .roll(domainDataContainer.getStructuredRandomCase().getNumberOfActions()) + 1;
         List<String> actionList = new ArrayList<>(numberOfActions);
 
         for (int i = 0; i < numberOfActions; i++) {
-            actionList.add(String.format("action.%03d", domainDataContainer.getPolicyUtil().roll(1000) + 1));
+            actionList.add(getRandomActionFromList(domainDataContainer));
         }
 
         return new DomainActions(actionList, true).getActionList();
+    }
+
+    private static String getRandomActionFromList(DomainDataContainer domainDataContainer) {
+        return domainDataContainer.getDomainActions().get(domainDataContainer.getPolicyUtil().roll(domainDataContainer.getDomainActions().size()));
     }
 
     public static List<String> generateActionListByCount(int actionCount) {

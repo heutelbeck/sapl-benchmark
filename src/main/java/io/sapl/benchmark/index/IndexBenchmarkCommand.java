@@ -57,12 +57,12 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
     public Integer call() throws Exception {
         log.info("Running an index benchmark... {}", this);
 
-        var tempDirectory = prepareTempDirectory();
+
         var outputDirectory = Path.of(outputPath);
         log.info("Results will be written to: {}", outputDirectory.toAbsolutePath());
 
         var parameters = BenchmarkParameters.builder()
-//                .seed(0L)
+                //                .seed(0L)
                 .indexType(indexType)
                 .benchmarkType(benchmarkType)
                 .runsPerCase(numberOfRunsPerCase)
@@ -83,6 +83,8 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
             log.info("######################################################");
             log.info("      EXECUTING CASE: {}      ", benchmarkCase.getName());
             log.info("######################################################");
+
+            var tempDirectory = prepareTempDirectory();
 
             var policyUtil = new PolicyUtil(parameters.isDeletePoliciesAfterBenchmark(), benchmarkCase.getSeed());
 
@@ -105,15 +107,15 @@ public class IndexBenchmarkCommand implements Callable<Integer> {
             resultWriter.writeDetailsChart(results, times, benchmarkCase.getName());
             resultWriter.addSeriesToOverviewChart(times, benchmarkCase.getName());
 
+            if (parameters.isDeletePoliciesAfterBenchmark()) {
+                log.info("Deleting generated policies...");
+                deleteTempDirectory(tempDirectory);
+            }
         }
 
         log.info("Benchmark completed. Writing final results...");
         resultWriter.writeFinalResults(resultContainer);
 
-        if (parameters.isDeletePoliciesAfterBenchmark()) {
-            log.info("Deleting generated policies...");
-            deleteTempDirectory(tempDirectory);
-        }
 
         return 0;
     }

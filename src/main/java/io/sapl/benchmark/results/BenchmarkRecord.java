@@ -15,5 +15,7 @@ public class BenchmarkRecord {
 
     String request;
 
-    String response;
+    String numberOfMatchingPolicies;
+
+    String matchingPolicyNames;
 }
