@@ -2,8 +2,124 @@
 benchmarkIdentifier: structured_random_single_benchmark
 cases:
     -
-        name: 5k policies
+        name: 55p, 550vp
+        seed: 3452452
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 10
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 15
+        #resources
+        numberOfGeneralResources: 20
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 3
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 100p, 1.250vp
         seed: 3242
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 15
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 15
+        #resources
+        numberOfGeneralResources: 25
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 5
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 600p, 15.000vp
+        seed: 345345
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 50
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 30
+        #resources
+        numberOfGeneralResources: 80
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 10
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 1.250p, 32.000vp
+        seed: 23523
+        cleanPolicyDirectory: true
+        #subjects
+        numberOfSubjects: 100
+        limitOfSubjectRoles: 5
+        numberOfLockedSubjects: 0
+        #actions
+        numberOfActions: 30
+        #resources
+        numberOfGeneralResources: 100
+        probabilityOfExtendedResource: 0.4
+        probabilityOfUnrestrictedResource: 0.1
+        #roles
+        numberOfGeneralRoles: 20
+        numberOfRolesPerSubject: 1
+        probabilityOfExtendedRole: 0.6
+        probabilityOfGeneralFullAccessRole: 0.1
+        probabilityOfGeneralReadAccessRole: 0.1
+        probabilityOfGeneralCustomAccessRole: 0.2
+        #per resource & role
+        probabilityFullAccessOnResource: 0.2
+        probabilityReadAccessOnResource: 0.3
+        probabilityCustomAccessOnResource: 0.8
+        #AuthorizationSubscription Generation
+        subscriptionGenerationFactor: 5
+        probabilityEmptySubscription: 0.95
+        probabilityEmptySubscriptionNode: 0.8
+    -
+        name: 5.250p, 710.000vp
+        seed: 27338
         cleanPolicyDirectory: true
         #subjects
         numberOfSubjects: 100
@@ -31,108 +147,21 @@ cases:
         probabilityEmptySubscription: 0.95
         probabilityEmptySubscriptionNode: 0.8
     -
-        name: 15k policies
-        seed: 3242
+        name: 10.000p, 650.000vp
+        seed: 8311
         cleanPolicyDirectory: true
         #subjects
-        numberOfSubjects: 250
+        numberOfSubjects: 150
         limitOfSubjectRoles: 5
         numberOfLockedSubjects: 0
         #actions
-        numberOfActions: 250
+        numberOfActions: 200
         #resources
-        numberOfGeneralResources: 500
+        numberOfGeneralResources: 400
         probabilityOfExtendedResource: 0.4
         probabilityOfUnrestrictedResource: 0.1
         #roles
         numberOfGeneralRoles: 50
-        numberOfRolesPerSubject: 1
-        probabilityOfExtendedRole: 0.6
-        probabilityOfGeneralFullAccessRole: 0.1
-        probabilityOfGeneralReadAccessRole: 0.1
-        probabilityOfGeneralCustomAccessRole: 0.2
-        #per resource & role
-        probabilityFullAccessOnResource: 0.2
-        probabilityReadAccessOnResource: 0.3
-        probabilityCustomAccessOnResource: 0.8
-        #AuthorizationSubscription Generation
-        subscriptionGenerationFactor: 5
-        probabilityEmptySubscription: 0.95
-        probabilityEmptySubscriptionNode: 0.8
-    -
-        name: 25k policies
-        seed: 3242
-        cleanPolicyDirectory: true
-        #subjects
-        numberOfSubjects: 275
-        limitOfSubjectRoles: 5
-        numberOfLockedSubjects: 0
-        #actions
-        numberOfActions: 350
-        #resources
-        numberOfGeneralResources: 700
-        probabilityOfExtendedResource: 0.4
-        probabilityOfUnrestrictedResource: 0.1
-        #roles
-        numberOfGeneralRoles: 65
-        numberOfRolesPerSubject: 1
-        probabilityOfExtendedRole: 0.6
-        probabilityOfGeneralFullAccessRole: 0.1
-        probabilityOfGeneralReadAccessRole: 0.1
-        probabilityOfGeneralCustomAccessRole: 0.2
-        #per resource & role
-        probabilityFullAccessOnResource: 0.2
-        probabilityReadAccessOnResource: 0.3
-        probabilityCustomAccessOnResource: 0.8
-        #AuthorizationSubscription Generation
-        subscriptionGenerationFactor: 5
-        probabilityEmptySubscription: 0.95
-        probabilityEmptySubscriptionNode: 0.8
-    -
-        name: 30k policies
-        seed: 3242
-        cleanPolicyDirectory: true
-        #subjects
-        numberOfSubjects: 275
-        limitOfSubjectRoles: 5
-        numberOfLockedSubjects: 0
-        #actions
-        numberOfActions: 350
-        #resources
-        numberOfGeneralResources: 700
-        probabilityOfExtendedResource: 0.4
-        probabilityOfUnrestrictedResource: 0.1
-        #roles
-        numberOfGeneralRoles: 80
-        numberOfRolesPerSubject: 1
-        probabilityOfExtendedRole: 0.6
-        probabilityOfGeneralFullAccessRole: 0.1
-        probabilityOfGeneralReadAccessRole: 0.1
-        probabilityOfGeneralCustomAccessRole: 0.2
-        #per resource & role
-        probabilityFullAccessOnResource: 0.2
-        probabilityReadAccessOnResource: 0.3
-        probabilityCustomAccessOnResource: 0.8
-        #AuthorizationSubscription Generation
-        subscriptionGenerationFactor: 5
-        probabilityEmptySubscription: 0.95
-        probabilityEmptySubscriptionNode: 0.8
-    -
-        name: 40k policies
-        seed: 3242
-        cleanPolicyDirectory: true
-        #subjects
-        numberOfSubjects: 300
-        limitOfSubjectRoles: 5
-        numberOfLockedSubjects: 0
-        #actions
-        numberOfActions: 350
-        #resources
-        numberOfGeneralResources: 800
-        probabilityOfExtendedResource: 0.4
-        probabilityOfUnrestrictedResource: 0.1
-        #roles
-        numberOfGeneralRoles: 100
         numberOfRolesPerSubject: 1
         probabilityOfExtendedRole: 0.6
         probabilityOfGeneralFullAccessRole: 0.1

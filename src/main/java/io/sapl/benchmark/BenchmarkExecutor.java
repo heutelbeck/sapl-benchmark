@@ -140,7 +140,7 @@ public class BenchmarkExecutor {
 
         sb.append("]");
 
-        return sb.toString();
+        return sb.toString().replace(", ]", "]");
     }
 
     private String getNumberOfMatchingPolicies(PolicyRetrievalResult result) {

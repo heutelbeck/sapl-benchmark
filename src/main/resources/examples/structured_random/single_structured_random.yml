@@ -2,21 +2,21 @@
 benchmarkIdentifier: structured_random_single_benchmark
 cases:
     -
-        name: 5k policies
-        seed: 3242
+        name: 13.000p, 650.000vp
+        seed: 8311
         cleanPolicyDirectory: true
         #subjects
-        numberOfSubjects: 100
+        numberOfSubjects: 150
         limitOfSubjectRoles: 5
         numberOfLockedSubjects: 0
         #actions
-        numberOfActions: 150
+        numberOfActions: 200
         #resources
-        numberOfGeneralResources: 300
+        numberOfGeneralResources: 400
         probabilityOfExtendedResource: 0.4
         probabilityOfUnrestrictedResource: 0.1
         #roles
-        numberOfGeneralRoles: 30
+        numberOfGeneralRoles: 50
         numberOfRolesPerSubject: 1
         probabilityOfExtendedRole: 0.6
         probabilityOfGeneralFullAccessRole: 0.1

@@ -7,7 +7,7 @@ echo "#################################"
 TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
 
 java -jar target/sapl-benchmark-index-2.0.0-SNAPSHOT.jar --benchmark=STRUCTURED_RANDOM \
-  --file=src/main/resources/examples/structured_random/single_structured_random.yml \
+  --file=src/main/resources/examples/structured_random/default_structured_random.yml \
   --index=CANONICAL --output=/tmp/sapl-benchmark/ --prefix="CANONICAL-$TIMESTAMP" \
   --runs=100 --circles=1 --delete=false
 
@@ -18,6 +18,6 @@ echo "#################################"
 TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
 
 java -jar target/sapl-benchmark-index-2.0.0-SNAPSHOT.jar --benchmark=STRUCTURED_RANDOM \
-  --file=src/main/resources/examples/structured_random/single_structured_random.yml \
+  --file=src/main/resources/examples/structured_random/default_structured_random.yml \
   --index=NAIVE --output=/tmp/sapl-benchmark/ --prefix="NAIVE-$TIMESTAMP" \
   --runs=100 --circles=1 --delete=false

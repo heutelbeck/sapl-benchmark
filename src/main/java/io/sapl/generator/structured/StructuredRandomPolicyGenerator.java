@@ -393,7 +393,7 @@ public class StructuredRandomPolicyGenerator implements PolicyGenerator {
                 StringBuilder policyBuilder = generateEmptyPolicy(policyName, true);
                 policyBuilder.append(String.format("(resource == \"%s\")", subjectName)).append(System.lineSeparator())
                         .append(TAB_STRING).append(" & ")
-                        .append(String.format("(\"%s\" == subject.name)", subjectName));
+                        .append(String.format("(subject.name == \"%s\")", subjectName));
 
                 policies.add(new DomainPolicy(policyName, policyBuilder.toString(), subjectName));
             }

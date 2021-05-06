@@ -28,6 +28,7 @@ import io.sapl.prp.index.canonical.ConjunctiveClause;
 import io.sapl.prp.index.canonical.DisjunctiveFormula;
 import io.sapl.prp.index.canonical.Literal;
 import io.sapl.prp.index.canonical.TreeWalker;
+import io.sapl.util.filemonitoring.FileMonitorUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class PolicyAnalyzer {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(policyPath, POLICY_FILE_GLOB_PATTERN)) {
                 for (Path filePath : stream) {
                     log.trace("load: {}", filePath);
-                    final SAPL saplDocument = interpreter.parse(Files.newInputStream(filePath));
+                    final SAPL saplDocument = interpreter.parse(FileMonitorUtil.readFile(filePath.toFile()));
                     parsedDocuments.put(filePath.toString(), saplDocument);
                 }
             }
