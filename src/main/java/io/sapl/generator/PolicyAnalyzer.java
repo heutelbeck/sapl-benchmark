@@ -96,7 +96,7 @@ public class PolicyAnalyzer {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(policyPath, POLICY_FILE_GLOB_PATTERN)) {
                 for (Path filePath : stream) {
                     log.trace("load: {}", filePath);
-                    final SAPL saplDocument = interpreter.parse(FileMonitorUtil.readFile(filePath.toFile()));
+                    final SAPL saplDocument = interpreter.parse(Files.newInputStream(filePath));
                     parsedDocuments.put(filePath.toString(), saplDocument);
                 }
             }
